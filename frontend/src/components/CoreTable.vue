@@ -24,8 +24,8 @@ limitations under the License. -->
     :footer-props="{ itemsPerPageOptions: [10, 100, -1] }"
   >
     <!-- ^customFilter prop is not used, because its implementation executes it for each property -->
-    <template v-slot:item.data-table-select="{ item }" >
-      <v-simple-checkbox v-on:input="select(item, isSelected(item))" :value="isSelected(item)" :disabled="!isActiveRecommendation(item)"/>
+    <template v-slot:item.data-table-select="{ item, select, isSelected }" >
+      <v-simple-checkbox v-on:input="select(!isSelected)" :value="isSelected&&isActiveRecommendation(item)" :disabled="isActiveRecommendation(item)"/>
     </template>
 
     <template v-slot:body.prepend="{ isMobile }">
@@ -122,20 +122,7 @@ export default class CoreTable extends Vue {
 
   set selectedRows(selected: RecommendationExtra[]) {
     console.log(selected);
-    this.$store.commit("coreTableStore/setSelected", selected.filter(elt => this.isActiveRecommendation(elt)));
-  }
-
-  isSelected(item: RecommendationExtra): boolean {
-    return this.selectedRows.includes(item);
-  }
-
-  select(item: RecommendationExtra, value: boolean) {
-    console.log("aaaa");
-    if (value) {
-      this.selectedRows = this.selectedRows.filter((elt) => elt != item);
-    } else {
-      this.selectedRows.push(item);
-    }
+    this.$store.commit("coreTableStore/setSelected", selected);
   }
 }
 </script>
