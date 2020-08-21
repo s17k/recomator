@@ -74,10 +74,10 @@ type googleService struct {
 
 // NewGoogleService creates new googleServices.
 // If creation failed the error will be non-nil.
-func NewGoogleService(ctx context.Context, conf *oauth2.Config, tok *oauth2.Token) (GoogleService, error) {
-	client := conf.Client(ctx, tok)
-	computeService, err := compute.NewService(ctx, option.WithHTTPClient(client))
-	if err != nil {
+func NewGoogleService(ctx context.Context) (GoogleService, error) {
+    computeService, err := compute.NewService(ctx);
+
+    if err != nil {
 		return nil, err
 	}
 
@@ -104,3 +104,5 @@ func NewGoogleService(ctx context.Context, conf *oauth2.Config, tok *oauth2.Toke
 		serviceUsageService:    serviceUsageService,
 	}, nil
 }
+
+
