@@ -18,6 +18,7 @@ package automation
 
 import (
 	"context"
+	"time"
 
 	"google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/compute/v1"
@@ -103,9 +104,11 @@ func NewGoogleService(ctx context.Context) (GoogleService, error) {
 	}, nil
 }
 
+// for anonymous functions passed to AwaitUntilCompletion
 type operationGenerator func() (*compute.Operation, error)
 
-// AwaitUntilCompletion oh wow
+// AwaitUntilCompletion takes a function that needs to be called repeatedly
+//  until the process (some Google Service request) has finished
 func AwaitUntilCompletion(gen operationGenerator) error {
 	for {
 		oper, err := gen()
@@ -115,5 +118,6 @@ func AwaitUntilCompletion(gen operationGenerator) error {
 		if oper.Status == "DONE" {
 			return nil
 		}
+		time.Sleep(time.Second)
 	}
 }
