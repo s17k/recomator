@@ -19,10 +19,8 @@ package automation
 import (
 	"context"
 
-	"github.com/google/uuid"
 	"google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/compute/v1"
-	"google.golang.org/api/googleapi"
 	"google.golang.org/api/recommender/v1"
 	"google.golang.org/api/serviceusage/v1"
 )
@@ -105,17 +103,12 @@ func NewGoogleService(ctx context.Context) (GoogleService, error) {
 	}, nil
 }
 
-// ComputeRequestCall is defined so that
-type ComputeRequestCall interface {
-	RequestId(string) ComputeRequestCall
-	Do(opts ...googleapi.CallOption) (compute.Operation, error)
-}
+type operationGenerator func() (*compute.Operation, error)
 
 // AwaitUntilCompletion oh wow
-func AwaitUntilCompletion(call ComputeRequestCall) error {
-	requestID := uuid.New().String()
+func AwaitUntilCompletion(gen operationGenerator) error {
 	for {
-		oper, err := call.RequestId(requestID).Do()
+		oper, err := gen()
 		if err != nil {
 			return err
 		}

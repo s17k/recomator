@@ -16,5 +16,14 @@ limitations under the License.
 
 package main
 
+import (
+	"context"
+
+	"github.com/s17k/recomator/pkg/automation"
+)
+
 func main() {
+	ctx := context.Background()
+	goo, err := automation.NewGoogleService
+
 }
