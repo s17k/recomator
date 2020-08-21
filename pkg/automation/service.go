@@ -112,10 +112,10 @@ type ComputeRequestCall interface {
 }
 
 // AwaitUntilCompletion oh wow
-func AwaitUntilCompletion(call *ComputeRequestCall) error {
+func AwaitUntilCompletion(call ComputeRequestCall) error {
 	requestID := uuid.New().String()
 	for {
-		oper, err := (*call).RequestId(requestID).Do()
+		oper, err := call.RequestId(requestID).Do()
 		if err != nil {
 			return err
 		}
