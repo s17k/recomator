@@ -108,7 +108,8 @@ func NewGoogleService(ctx context.Context) (GoogleService, error) {
 type operationGenerator func() (*compute.Operation, error)
 
 // AwaitUntilCompletion takes a function that needs to be called repeatedly
-//  until the process (some Google Service request) has finished
+//  to check if a process (some Google Service request) has finished.
+// Such a function is usually constructed by wrapping a .Do() call
 func AwaitUntilCompletion(gen operationGenerator) error {
 	for {
 		oper, err := gen()
