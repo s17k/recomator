@@ -1,4 +1,4 @@
-module github.com/googleinterns/recomator
+module github.com/s17k/recomator
 
 go 1.14
 
