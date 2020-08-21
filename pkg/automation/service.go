@@ -25,7 +25,7 @@ import (
 	"google.golang.org/api/serviceusage/v1"
 )
 
-// GoogleService is the inferface that prodives methods required to list recommendations and apply them
+// GoogleService is the inferface that provides methods required to list recommendations and apply them
 type GoogleService interface {
 	// changes the machine type of an instance
 	ChangeMachineType(project, zone, instance, machineType string) error
@@ -100,4 +100,19 @@ func NewGoogleService(ctx context.Context) (GoogleService, error) {
 		resourceManagerService: resourceManagerService,
 		serviceUsageService:    serviceUsageService,
 	}, nil
+}
+
+type operationGenerator func() (*compute.Operation, error)
+
+// AwaitUntilCompletion oh wow
+func AwaitUntilCompletion(gen operationGenerator) error {
+	for {
+		oper, err := gen()
+		if err != nil {
+			return err
+		}
+		if oper.Status == "DONE" {
+			return nil
+		}
+	}
 }
