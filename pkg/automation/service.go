@@ -19,10 +19,8 @@ package automation
 import (
 	"context"
 
-	"golang.org/x/oauth2"
 	"google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/compute/v1"
-	"google.golang.org/api/option"
 	"google.golang.org/api/recommender/v1"
 	"google.golang.org/api/serviceusage/v1"
 )
@@ -74,9 +72,9 @@ type googleService struct {
 
 // NewGoogleService creates new googleServices.
 // If creation failed the error will be non-nil.
-func NewGoogleService(ctx context.Context, conf *oauth2.Config, tok *oauth2.Token) (GoogleService, error) {
-	client := conf.Client(ctx, tok)
-	computeService, err := compute.NewService(ctx, option.WithHTTPClient(client))
+func NewGoogleService(ctx context.Context) (GoogleService, error) {
+	computeService, err := compute.NewService(ctx)
+
 	if err != nil {
 		return nil, err
 	}
