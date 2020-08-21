@@ -24,6 +24,7 @@ import (
 
 func main() {
 	ctx := context.Background()
-	goo, err := automation.NewGoogleService
-
+	goo, err := automation.NewGoogleService(ctx);
+	err := goo.CreateSnapshot("recomator", "us-central1-a", "vkovalova-idle-2", "shcheshnyak-snapszocik-vkovalova-idle-2")
+    fmt.Println(err);
 }
